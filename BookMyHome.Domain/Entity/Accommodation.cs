@@ -2,7 +2,7 @@
 
 namespace BookMyHome.Domain.Entity
 {
-    public class Accomodoation : AggregateRoot
+    public class Accommodation : AggregateRoot
     {
         public double Price { get; private set;}
         public Location Location { get; private set;}
@@ -11,7 +11,7 @@ namespace BookMyHome.Domain.Entity
         public string HouseRule { get; private set; }
         public List<DateOnly> AvailableDates { get; private set; }
 
-        private Accomodoation(double price, Location location, string buildingType,string houseRule, List<string> facility, List<DateOnly> availableDates)
+        private Accommodation(double price, Location location, string buildingType,string houseRule, List<string> facility, List<DateOnly> availableDates)
         {
             Price = price;
             Location = location;
@@ -21,11 +21,11 @@ namespace BookMyHome.Domain.Entity
             AvailableDates = availableDates;
         }
 
-        public static Accomodoation Create(double price, Location location, string buildingType, string houseRule,
+        public static Accommodation Create(double price, Location location, string buildingType, string houseRule,
             List<string> facility, List<DateOnly> availableDates)
         {
-            var accomodoation = new Accomodoation(price, location, buildingType, houseRule, facility, availableDates);
-            return accomodoation;
+            var accommodation = new Accommodation(price, location, buildingType, houseRule, facility, availableDates);
+            return accommodation;
         }
     }
 }
