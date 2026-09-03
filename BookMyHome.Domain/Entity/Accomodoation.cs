@@ -1,10 +1,12 @@
-﻿namespace BookMyHome.Domain.Entity
+﻿using BookMyHome.Domain.ValueObject;
+
+namespace BookMyHome.Domain.Entity
 {
     public class Accomodoation : AggregateRoot
     {
         public double Price { get; private set;}
 
-        public string Location { get; private set;}
+        public Location Location { get; private set;}
 
         public List<string> Facility { get; private set; } // example = aircondition (a/c)
 
