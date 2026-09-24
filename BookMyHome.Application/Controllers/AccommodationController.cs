@@ -21,7 +21,7 @@ namespace BookMyHome.Application.Controllers
         //    }
         //}
 
-        [HttpGet]
+        //[HttpGet]
         // Hent alle accommodation items og return dem som
         //public IEnumerable<AccommodationItem> GetAllAccommodations()
         //{
