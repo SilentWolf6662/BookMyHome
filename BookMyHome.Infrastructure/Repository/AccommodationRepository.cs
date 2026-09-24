@@ -17,14 +17,14 @@ namespace BookMyHome.Infrastructure.Repository
         Task<IReadOnlyList<AccommodationItem>> IAccommodationRepository.GetAllAsync()
         {
             IReadOnlyList<AccommodationItem> items = _itemList
-                .Select(a => new AccommodationItem
+                .Select(accommodation => new AccommodationItem
                 {
-                    Id = a.Id,
-                    Price = a.Price,
-                    Location = a.Location.ToString(),
-                    Facility = string.Join(", ", a.Facility),
-                    BuildingType = a.BuildingType,
-                    HouseRule = a.HouseRule
+                    Id = accommodation.Id,
+                    BuildingType = accommodation.BuildingType,
+                    Location = accommodation.Location.ToString(),
+                    Facility = string.Join(", ", accommodation.Facility),
+                    Price = accommodation.Price,
+                    HouseRule = accommodation.HouseRule
                 })
                 .ToList();
 

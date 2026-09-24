@@ -1,5 +1,6 @@
 ﻿@page "/available-accommodations"
 @using BookMyHome.Facade.DTO;
+@using BookMyHome.Presentation.Services.Accommodation;
 
 <PageTitle>Available Accommodations</PageTitle>
 
@@ -17,4 +18,14 @@
 }
 @code {
 	private List<AccommodationItem> Accommodations = new List<AccommodationItem>();
+
+	[Inject]
+	public IAccommodationService AccommodationService { get; set; }
+	private int ErrorCode { get; set; } = 0;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Accommodations = (await AccommodationService.GetAllItems())?.ToList() ?? new List<AccommodationItem>();
+		//Hvis ingen varer findes, returneres en tom liste
+	}
 }
