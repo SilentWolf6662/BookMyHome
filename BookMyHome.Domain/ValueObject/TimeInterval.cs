@@ -19,7 +19,7 @@ namespace BookMyHome.Domain.ValueObject
             End = end;
         }
 
+        // Tjek at 2 datoer ikke overlapper hinanden
         public bool Overlapping(TimeInterval other) => Start < other.End && End > other.Start;
-
     }
 }
