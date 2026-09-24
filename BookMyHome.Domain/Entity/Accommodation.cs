@@ -6,7 +6,7 @@ namespace BookMyHome.Domain.Entity
     {
         public double Price { get; private set;}
         public Location Location { get; private set;}
-        public List<string> Facility { get; private set; } // example = aircondition (a/c)
+        public List<string> Facility { get; private set; } // example = aircondition (a/c), wifi, tv, osv.
         public string BuildingType { get; private set; }
         public string HouseRule { get; private set; }
         public List<DateOnly> AvailableDates { get; private set; }

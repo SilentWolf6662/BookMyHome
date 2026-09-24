@@ -1,0 +1,20 @@
+﻿@page "/available-accommodations"
+@using BookMyHome.Facade.DTO;
+
+<PageTitle>Available Accommodations</PageTitle>
+
+<h1>Available Accommodations</h1>
+
+@foreach (var accommodation in Accommodations)
+{
+	<article>
+		@accommodation.BuildingType
+		@accommodation.Location
+		@accommodation.Facility
+		@accommodation.Price
+		@accommodation.HouseRule
+	</article>
+}
+@code {
+	private List<AccommodationItem> Accommodations = new List<AccommodationItem>();
+}
