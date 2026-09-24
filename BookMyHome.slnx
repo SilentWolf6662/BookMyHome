@@ -3,5 +3,5 @@
   <Project Path="BookMyHome.Domain/BookMyHome.Domain.csproj" Id="0722093d-3154-43d2-b6b3-447a226ca63b" />
   <Project Path="BookMyHome.Facade/BookMyHome.Facade.csproj" Id="acde06bd-c391-486f-8493-0bb5ec1c281b" />
   <Project Path="BookMyHome.Infrastructure/BookMyHome.Infrastructure.csproj" Id="b3043e41-a234-41d1-81ce-bc39d1fc5e4a" />
-  <Project Path="Præsentation/Præsentation.csproj" Id="b112ac50-0b80-46a5-8a0b-9d1df613d0c1" />
+  <Project Path="BookMyHome.Presentation/BookMyHome.Presentation.csproj" Id="05a95dba-5a03-4f29-84ad-a77ca664c668" />
 </Solution>

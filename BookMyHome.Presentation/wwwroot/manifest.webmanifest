@@ -1,6 +1,6 @@
 {
-  "name": "Præsentation",
-  "short_name": "Præsentation",
+  "name": "BookMyHome.Presentation",
+  "short_name": "BookMyHome.Presentation",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
