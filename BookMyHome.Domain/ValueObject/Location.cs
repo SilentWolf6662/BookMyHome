@@ -16,5 +16,10 @@ namespace BookMyHome.Domain.ValueObject
             City = city;
             Zipcode = zipcode;
         }
+
+        public override string ToString()
+        {
+            return $"{StreetName}, {Zipcode} {City}";
+        }
     }
 }

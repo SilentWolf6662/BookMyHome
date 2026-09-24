@@ -1,12 +1,12 @@
 ﻿using BookMyHome.Domain.Entity;
+using BookMyHome.Facade.DTO;
 using BookMyHome.Infrastructure.Repository.Interface;
-using System.Collections.ObjectModel;
 
 namespace BookMyHome.Infrastructure.Repository
 {
     public class AccommodationRepository : IAccommodationRepository
     {
-        private readonly List<Accommodation> itemList =
+        private readonly List<Accommodation> _itemList =
         [
             Accommodation.Create(250.0, new Domain.ValueObject.Location("Street Name", 7100, "Vejle"), "Appartment",
                 "House Rules", ["A/C"],
@@ -21,22 +21,33 @@ namespace BookMyHome.Infrastructure.Repository
                     DateOnly.FromDateTime(DateTime.Today).AddDays(6)
                 ])
         ];
-        Task<IReadOnlyList<Accommodation>> IAccommodationRepository.GetAllAsync()
+        Task<IReadOnlyList<AccommodationItem>> IAccommodationRepository.GetAllAsync()
         {
-            return Task.FromResult<IReadOnlyList<Accommodation>>(itemList);
+            List<AccommodationItem> accommodationItems = (from accommodation in _itemList
+                let facilityStr = accommodation.Facility.Aggregate("", (current, t) => current + $", {t}")
+                select new AccommodationItem
+                {
+                    Price = accommodation.Price,
+                    HouseRule = accommodation.HouseRule,
+                    BuildingType = accommodation.BuildingType,
+                    Location = accommodation.Location.ToString(),
+                    Facility = facilityStr
+                })
+                .ToList();
+            return Task.FromResult<IReadOnlyList<AccommodationItem>>(accommodationItems);
         }
 
-        Task<IReadOnlyList<Accommodation>> IAccommodationRepository.GetByHostIdAsync(Guid hostId)
+        Task<IReadOnlyList<AccommodationItem>> IAccommodationRepository.GetByHostIdAsync(Guid hostId)
         {
             throw new NotImplementedException();
         }
 
-        Task<Accommodation?> IAccommodationRepository.GetByIdAsync(Guid id)
+        Task<AccommodationItem?> IAccommodationRepository.GetByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        Task IAccommodationRepository.AddAsync(Accommodation item)
+        Task IAccommodationRepository.AddAsync(AccommodationItem item)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,6 @@
 ﻿namespace BookMyHome.Infrastructure.Query
 {
-    public class AccommodationQueriesImpl : IAccommodationQueries
+    public class AccommodationQueriesImpl //: IAccommodationQueries
     {
 
     }
