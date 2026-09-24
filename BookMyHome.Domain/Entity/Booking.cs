@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BookMyHome.Domain.ValueObject;
+﻿using BookMyHome.Domain.ValueObject;
 
 namespace BookMyHome.Domain.Entity
 {
