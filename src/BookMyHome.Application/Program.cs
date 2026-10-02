@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowBlazorOrigin", policy =>
     {
         // Replace with your Blazor app's origin (e.g. the URL where your Blazor app is running)
-        policy.WithOrigins("https://localhost:7284")
+        policy.WithOrigins("https://localhost:8001")
               .AllowAnyHeader() // Allows headers like Content-Type  
               .AllowAnyMethod(); // Allows HTTP methods (GET, POST, etc.)  
     });
