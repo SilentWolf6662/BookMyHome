@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 
+# Update package lists, install curl, and clean up apt cache to reduce image size
 RUN apt-get update \
 	&& apt-get install -y curl \
 	&& rm -rf /var/lib/apt/lists/*
