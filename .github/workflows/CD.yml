@@ -17,7 +17,7 @@ env:
   # Name of the Docker image to build and push to the registry
   IMAGE_NAME: "bookmyhome"
   # GitHub user that pushes the Docker image to the registry (must be a user with write access to the repository)
-  GITHUB_ACTOR: "virtou2021"
+  GITHUB_ACTOR: "silentwolf6662"
 
 jobs:
   Build-and-Deploy-BookMyHome:

@@ -1,6 +1,6 @@
 services:
   BOOK_MY_HOME_TEST:
-    image: ghcr.io/virtou2021/bookmyhome:latest
+    image: ghcr.io/silentwolf6662/bookmyhome:latest
     restart: unless-stopped
     ports:
      - 8001:8001
