@@ -1,0 +1,48 @@
+# What is this workflow called?
+name: Build and Test .NET 10.0.x Solution
+
+# When is this workflow triggered?
+on:
+  # Manual triggering of the workflow from the GitHub UI
+  workflow_dispatch:
+  # The workflow will run when a push is made (No branch filter == all branches)
+  push:
+    # The push must be to the main branch
+    branches: ["main"]
+
+# Who has permission to do what in this workflow?
+permissions:
+  # Allow read access to repository contents
+  contents: read
+
+# Environment variables that will be available to all jobs and steps in this workflow
+env:
+  # The version of .NET to use for the build (x means latest patch version of the major version)
+  DOTNET_VERSION: "10.0.x"
+  # Specifies the path to the solution file to build and test
+  SOLUTION_PATH: "BookMyHome.slnx"
+
+jobs:
+  Build-and-Test:
+    name: Build-and-Test
+    # Docker runs on Linux, so we need to use a Linux runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Clones the repository to the empty runner/container
+      - name: Get Code
+        uses: actions/checkout@v7
+      # Github Markedplace fx: https://github.com/actions/setup-dotnet to view latest version of the action
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      # Restore dependencies and nuget packets for the solution
+      - name: Restore Dependencies
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
+      # Build the solution without restoring dependencies (restored in the previous step)
+      - name: Build Solution
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+      # Run the tests in the solution without restoring dependencies or building (both done in previous steps)
+      - name: Run Tests
+        run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal

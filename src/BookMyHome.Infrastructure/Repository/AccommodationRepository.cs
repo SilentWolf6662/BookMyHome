@@ -13,7 +13,7 @@ namespace BookMyHome.Infrastructure.Repository
             Accommodation.Create(250.0, new Domain.ValueObject.Location("Street Name", 8500, "Grenaa"), "Appartment", "House Rules", ["A/C"])
         ];
 
-        // Return alle Accommodations i repo
+        // Return alle Accommodations i repo til en list
         Task<IReadOnlyList<AccommodationItem>> IAccommodationRepository.GetAllAsync()
         {
             IReadOnlyList<AccommodationItem> items = _itemList

@@ -1,0 +1,53 @@
+# What is this workflow called?
+name: Docker Build and Push to Github Packages
+
+# When is this workflow triggered?
+on:
+  # Manual triggering of the workflow from the GitHub UI
+  workflow_dispatch:
+  # The workflow will run when a push is made (No branch filter == all branches)
+  push:
+    # The push must be to the main branch
+    branches: ["main"]
+
+# Environment variables that will be available to all jobs and steps in this workflow
+env:
+  # REGISTRY: ghcr.io is the registry for Github packages, where the Docker image will be pushed to
+  REGISTRY: ghcr.io
+  # Name of the Docker image to build and push to the registry
+  IMAGE_NAME: "bookmyhome"
+  # GitHub user that pushes the Docker image to the registry (must be a user with write access to the repository)
+  GITHUB_ACTOR: "virtou2021"
+
+jobs:
+  Build-and-Deploy-BookMyHome:
+    name: Build and Deploy BookMyHome
+    # Operating System (OS) for the runner to use (Linux is required for Docker)
+    runs-on: ubuntu-latest
+    # Who has permission to do what in this workflow?
+    permissions:
+      # Allow read access to repository contents
+      contents: read
+      # Workflow can write/communicate with packages
+      packages: write
+
+    steps:
+      # Clones the repository to the empty runner/container
+      - name: Get Code
+        uses: actions/checkout@v7
+      # Logs into the registry with an instance Github Token
+      - name: Log into registry ${{env.REGISTRY}}
+        uses: docker/login-action@v4
+        with:
+          registry: ${{env.REGISTRY}}
+          username: ${{env.GITHUB_ACTOR}}
+          # Github Tokens logs in without your e-mail or password (once per workflow)
+          # The token can read contents and write packages (specified in permissions)
+          password: ${{secrets.GITHUB_TOKEN}}
+      # Build and push the content to the Docker image following the tags-path
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: src/BookMyHome
+          push: true
+          tags: ${{env.REGISTRY}}/${{env.GITHUB_ACTOR}}/${{env.IMAGE_NAME}}:latest
