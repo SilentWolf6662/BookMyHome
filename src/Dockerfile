@@ -1,14 +1,3 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-
-# Update package lists, install curl, and clean up apt cache to reduce image size
-RUN apt-get update \
-	&& apt-get install -y curl \
-	&& rm -rf /var/lib/apt/lists/*
-
-WORKDIR /app
-EXPOSE 8001
-ENV ASPNETCORE_URLS=http://+:8001
-
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
 ARG BUILD_CONFIGURATION=Release
@@ -28,13 +17,15 @@ COPY BookMyHome.Domain/ BookMyHome.Domain/
 COPY BookMyHome.Infrastructure/ BookMyHome.Infrastructure/
 COPY BookMyHome.Presentation/ BookMyHome.Presentation/
 
-RUN dotnet build "BookMyHome.Presentation/BookMyHome.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
 FROM build AS publish
-RUN dotnet publish "BookMyHome.Presentation/BookMyHome.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "BookMyHome.Presentation/BookMyHome.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+# Blazor WebAssembly is static files only, so it is served by nginx instead of the ASP.NET runtime
+FROM nginx:alpine AS final
 
-ENTRYPOINT ["dotnet", "BookMyHome.Presentation.dll"]
+RUN apk add --no-cache curl
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=publish /app/publish/wwwroot /usr/share/nginx/html
+
+EXPOSE 8001
