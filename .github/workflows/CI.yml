@@ -8,7 +8,7 @@ on:
   # The workflow will run when a push is made (No branch filter == all branches)
   push:
     # The push must be to the main branch
-    branches: ["main"]
+    branches: ["main", "dev", "feature/*"]
 
 # Who has permission to do what in this workflow?
 permissions:
