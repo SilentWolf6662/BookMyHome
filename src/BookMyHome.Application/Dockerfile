@@ -1,32 +1,31 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
+
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 8002
+ENV ASPNETCORE_HTTP_PORTS=8002
 
-
-# This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/BookMyHome.Application/BookMyHome.Application.csproj", "src/BookMyHome.Application/"]
-COPY ["src/BookMyHome.Facade/BookMyHome.Facade.csproj", "src/BookMyHome.Facade/"]
-COPY ["src/BookMyHome.Infrastructure/BookMyHome.Infrastructure.csproj", "src/BookMyHome.Infrastructure/"]
-COPY ["src/BookMyHome.Domain/BookMyHome.Domain.csproj", "src/BookMyHome.Domain/"]
-RUN dotnet restore "./src/BookMyHome.Application/BookMyHome.Application.csproj"
-COPY . .
-WORKDIR "/src/src/BookMyHome.Application"
-RUN dotnet build "./BookMyHome.Application.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+COPY BookMyHome.Application/BookMyHome.Application.csproj BookMyHome.Application/
+COPY BookMyHome.Domain/BookMyHome.Domain.csproj BookMyHome.Domain/
+COPY BookMyHome.Facade/BookMyHome.Facade.csproj BookMyHome.Facade/
+COPY BookMyHome.Infrastructure/BookMyHome.Infrastructure.csproj BookMyHome.Infrastructure/
+
+RUN dotnet restore "BookMyHome.Application/BookMyHome.Application.csproj"
+
+COPY BookMyHome.Application/ BookMyHome.Application/
+COPY BookMyHome.Domain/ BookMyHome.Domain/
+COPY BookMyHome.Facade/ BookMyHome.Facade/
+COPY BookMyHome.Infrastructure/ BookMyHome.Infrastructure/
+
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./BookMyHome.Application.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "BookMyHome.Application/BookMyHome.Application.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
