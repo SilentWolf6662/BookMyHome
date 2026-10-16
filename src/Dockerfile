@@ -21,7 +21,7 @@ FROM build AS publish
 RUN dotnet publish "BookMyHome.Presentation/BookMyHome.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 # Blazor WebAssembly is static files only, so it is served by nginx instead of the ASP.NET runtime
-FROM public.ecr.aws/nginx/nginx:alpine AS final
+FROM nginx:alpine AS final
 
 RUN apk add --no-cache curl
 
